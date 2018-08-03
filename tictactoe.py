@@ -9,7 +9,7 @@ winningCombinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [3, 6, 9], [2
 winningCombinations.sort()
 
 
-# Counter class used to create an object to track player turns
+# Counter class used to create an object to track player turns and also to randomise the starting player.
 class Counter:
     c = 0
 
@@ -28,19 +28,6 @@ def display_board(boardIndex):
         print('No board index supplied')
         exit(1)
     else:
-
-        # print(f'       |     |    ')
-        # print(f'   {board[1]}   |   {board[2]}  |  {board[3]}  ')
-        # print(f'       |     |    ')
-        # print('-------------------')
-        # print(f'       |     |    ')
-        # print(f'   {board[4]}   |   {board[5]}  |  {board[6]}  ')
-        # print(f'       |     |    ')
-        # print('-------------------')
-        # print(f'       |     |    ')
-        # print(f'   {board[7]}   |   {board[8]}  |  {board[9]}  ')
-        # print(f'       |     |    ')
-
         print(f'''
   {boardIndex[1]} | {boardIndex[2]} | {boardIndex[3]}
 ----------
@@ -57,15 +44,13 @@ def get_player_input(markedNumbers):
 
     players = {'currentPlayer': '', 'player1': [{'number': int(), 'marker': 'x'}],
                'player2': [{'number': int(), 'marker': '0'}]}
-    # whichPlayer = ''
-    # currentPlayer = ''
 
     if counter.c % 2 == 0:
         print('Player 1 your go!')
-        currentPlayer = 'player1'
+        currentplayer = 'player1'
     else:
         print('Player 2 your go!')
-        currentPlayer = 'player2'
+        currentplayer = 'player2'
 
     validinput = False
     while validinput != True:
@@ -80,8 +65,8 @@ def get_player_input(markedNumbers):
             print('valid number entered')
             counter.c += 1
             turnCounter.c += 1
-            players['currentPlayer'] = currentPlayer
-            players[currentPlayer][0]['number'] = playerInput
+            players['currentPlayer'] = currentplayer
+            players[currentplayer][0]['number'] = playerInput
             return players
 
         elif playerInput is None:
@@ -94,15 +79,15 @@ def get_player_input(markedNumbers):
 # Function which reads in player input form input function and updates 'board' list with an 'x' or an '0'
 
 
-def add_input_to_board(players, board):
+def add_input_to_board(players, boardIndex):
 
     if players['currentPlayer'] == 'player1':
         index = players['player1'][0]['number']
-        board[index] = players['player1'][0]['marker']
+        boardIndex[index] = players['player1'][0]['marker']
 
     else:
         index = players['player2'][0]['number']
-        board[index] = players['player2'][0]['marker']
+        boardIndex[index] = players['player2'][0]['marker']
 
 
 # check for winner
@@ -115,12 +100,11 @@ def player_count(boardIndex, markedNumbers):
         for a in winningCombinations:
 
             for b in a:
-                # If number in Marked numbers it has already been checked
+                # If number in Marked numbers it has already been selected
 
                 if b not in markedNumbers:
                     if boardIndex[b] == 'x':
                         player1selections.append(b)
-                        print(player1selections)
                         markedNumbers.append(b)
                     elif boardIndex[b] == '0':
                         player2selections.append(b)
