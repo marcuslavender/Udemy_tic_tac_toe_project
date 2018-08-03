@@ -7,6 +7,7 @@ counts = [0, 0]
 player1selections = []
 player2selections = []
 winningCombinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [3, 6, 9], [2, 5, 8], [1, 5, 9], [3, 5, 7]]
+winningCombinations.sort()
 
 
 # Counter class used to create an object to track player turns
@@ -120,6 +121,7 @@ def player_count(board, markedNumbers):
                 if b not in markedNumbers:
                     if board[b] == 'x':
                         player1selections.append(b)
+                        print(player1selections)
                         markedNumbers.append(b)
                     elif board[b] == '0':
                         player2selections.append(b)
@@ -132,22 +134,15 @@ def player_count(board, markedNumbers):
 
 def check_winner():
     for a in winningCombinations:
-        for b in a:
-            if b in player1selections:
-                counts[0] += 1
-                print(counts[0])
-                player1selections.remove(b)
-                if counts[0] == 3:
+            print(a)
+
+            if a == player1selections:
                     print('''
                     player 1 wins
                     ''')
                     exit(0)
 
-            elif b in player2selections:
-                counts[1] += 1
-                print(counts[1])
-                player2selections.remove(b)
-                if counts[1] == 3:
+            elif a == player2selections:
                     print('''
                     Player 2 wins
                     ''')
