@@ -3,7 +3,6 @@ from random import randint
 
 board = ['#', '', '', '', '', '', '', '', '', '']
 markedNumbers = []
-counts = [0, 0]
 player1selections = []
 player2selections = []
 winningCombinations = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7], [3, 6, 9], [2, 5, 8], [1, 5, 9], [3, 5, 7]]
@@ -19,12 +18,13 @@ class Counter:
 
 
 counter = Counter(randint(0, 10))
+turnCounter = Counter(1)
 
 
 # Creates a board which uses the 'board' list to set a 'x' or a '0'
 
-def display_board(board):
-    if not board:
+def display_board(boardIndex):
+    if not boardIndex:
         print('No board index supplied')
         exit(1)
     else:
@@ -42,26 +42,23 @@ def display_board(board):
         # print(f'       |     |    ')
 
         print(f'''
-  {board[1]} | {board[2]} | {board[3]}
+  {boardIndex[1]} | {boardIndex[2]} | {boardIndex[3]}
 ----------
-  {board[4]} | {board[5]} | {board[6]}
+  {boardIndex[4]} | {boardIndex[5]} | {boardIndex[6]}
 ----------
-  {board[7]} | {board[8]} | {board[9]}
+  {boardIndex[7]} | {boardIndex[8]} | {boardIndex[9]}
             ''')
 
 
 def get_player_input(markedNumbers):
-    if markedNumbers.sort() == [1,2,3,4,5,6,8,9]:
+    if markedNumbers.sort() == [1, 2, 3, 4, 5, 6, 8, 9]:
         print('Draw!')
         exit(0)
-
 
     players = {'currentPlayer': '', 'player1': [{'number': int(), 'marker': 'x'}],
                'player2': [{'number': int(), 'marker': '0'}]}
     # whichPlayer = ''
     # currentPlayer = ''
-
-
 
     if counter.c % 2 == 0:
         print('Player 1 your go!')
@@ -70,8 +67,8 @@ def get_player_input(markedNumbers):
         print('Player 2 your go!')
         currentPlayer = 'player2'
 
-    validInput = False
-    while validInput != True:
+    validinput = False
+    while validinput != True:
 
         playerInput = int(input('Enter a number form 1-9 '))
 
@@ -82,9 +79,14 @@ def get_player_input(markedNumbers):
         if playerInput in range(1, 10):
             print('valid number entered')
             counter.c += 1
+            turnCounter.c += 1
             players['currentPlayer'] = currentPlayer
             players[currentPlayer][0]['number'] = playerInput
             return players
+
+        elif playerInput is None:
+            print('Nothing entered, try again')
+
         else:
             print('Invalid input entered, try again: ')
 
@@ -104,10 +106,7 @@ def add_input_to_board(players, board):
 
 
 # check for winner
-def player_count(board, markedNumbers):
-
-
-
+def player_count(boardIndex, markedNumbers):
 
     loop = True
 
@@ -119,18 +118,20 @@ def player_count(board, markedNumbers):
                 # If number in Marked numbers it has already been checked
 
                 if b not in markedNumbers:
-                    if board[b] == 'x':
+                    if boardIndex[b] == 'x':
                         player1selections.append(b)
                         print(player1selections)
                         markedNumbers.append(b)
-                    elif board[b] == '0':
+                    elif boardIndex[b] == '0':
                         player2selections.append(b)
                         markedNumbers.append(b)
-
         break
 
-
-
+def check_for_draw():
+    print(counter.c)
+    if turnCounter.c > 9:
+        print("Game is a draw!")
+        exit(0)
 
 def check_winner():
     for a in winningCombinations:
@@ -149,12 +150,11 @@ def check_winner():
                     exit(0)
 
 
+# running the game loop is exited only if a player wins or a draw is declared.
 
+end = False
 
-# running the game
-
-endCheck = False
-while endCheck != True:
+while end != True:
     # Display the board as a grid
     display_board(board)
 
@@ -169,3 +169,7 @@ while endCheck != True:
 
     # Check if a  player has won, if they have then change quit to = True
     check_winner()
+
+    # check for a draw
+
+    check_for_draw()
