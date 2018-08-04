@@ -105,9 +105,11 @@ def player_count(boardindex, markedNumbers):
                 if b not in markedNumbers:
                     if boardindex[b] == 'x':
                         player1selections.append(b)
+                        player1selections.sort()
                         markedNumbers.append(b)
                     elif boardindex[b] == '0':
                         player2selections.append(b)
+                        player2selections.sort()
                         markedNumbers.append(b)
         break
 
@@ -118,18 +120,13 @@ def check_for_draw():
 
 def check_winner():
     for combination in winningCombinations:
+        if combination == player1selections:
+                print('\nPlayer 1 wins \n')
+                exit(0)
 
-            if combination == player1selections:
-                    print('''
-                    player 1 wins
-                    ''')
-                    exit(0)
-
-            elif combination == player2selections:
-                    print('''
-                    Player 2 wins
-                    ''')
-                    exit(0)
+        elif combination == player2selections:
+                print('\nPlayer 2 wins\n')
+                exit(0)
 
 
 # running the game loop is exited only if a player wins or a draw is declared.
@@ -153,5 +150,4 @@ while end != True:
     check_winner()
 
     # check for a draw
-
     check_for_draw()
