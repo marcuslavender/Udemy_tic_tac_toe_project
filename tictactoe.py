@@ -23,22 +23,22 @@ turnCounter = Counter(1)
 
 # Creates a board which uses the 'board' list to set a 'x' or a '0'
 
-def display_board(boardIndex):
-    if not boardIndex:
+def display_board(boardindex):
+    if not boardindex:
         print('No board index supplied')
         exit(1)
     else:
         print(f'''
-  {boardIndex[1]} | {boardIndex[2]} | {boardIndex[3]}
+  {boardindex[1]} | {boardindex[2]} | {boardindex[3]}
 ----------
-  {boardIndex[4]} | {boardIndex[5]} | {boardIndex[6]}
+  {boardindex[4]} | {boardindex[5]} | {boardindex[6]}
 ----------
-  {boardIndex[7]} | {boardIndex[8]} | {boardIndex[9]}
+  {boardindex[7]} | {boardindex[8]} | {boardindex[9]}
             ''')
 
 
-def get_player_input(markedNumbers):
-    if markedNumbers.sort() == [1, 2, 3, 4, 5, 6, 8, 9]:
+def get_player_input(markednumbers):
+    if markednumbers.sort() == [1, 2, 3, 4, 5, 6, 8, 9]:
         print('Draw!')
         exit(0)
 
@@ -55,21 +55,21 @@ def get_player_input(markedNumbers):
     validinput = False
     while validinput != True:
 
-        playerInput = int(input('Enter a number form 1-9 '))
+        playerinput = int(input('Enter a number form 1-9 '))
 
-        if playerInput in markedNumbers:
+        if playerinput in markedNumbers:
             print('Number has already been chosen, try again')
             continue
 
-        if playerInput in range(1, 10):
+        if playerinput in range(1, 10):
             print('valid number entered')
             counter.c += 1
             turnCounter.c += 1
             players['currentPlayer'] = currentplayer
-            players[currentplayer][0]['number'] = playerInput
+            players[currentplayer][0]['number'] = playerinput
             return players
 
-        elif playerInput is None:
+        elif playerinput is None:
             print('Nothing entered, try again')
 
         else:
@@ -79,19 +79,19 @@ def get_player_input(markedNumbers):
 # Function which reads in player input form input function and updates 'board' list with an 'x' or an '0'
 
 
-def add_input_to_board(players, boardIndex):
+def add_input_to_board(players, boardindex):
 
     if players['currentPlayer'] == 'player1':
         index = players['player1'][0]['number']
-        boardIndex[index] = players['player1'][0]['marker']
+        boardindex[index] = players['player1'][0]['marker']
 
     else:
         index = players['player2'][0]['number']
-        boardIndex[index] = players['player2'][0]['marker']
+        boardindex[index] = players['player2'][0]['marker']
 
 
 # check for winner
-def player_count(boardIndex, markedNumbers):
+def player_count(boardindex, markedNumbers):
 
     loop = True
 
@@ -103,31 +103,29 @@ def player_count(boardIndex, markedNumbers):
                 # If number in Marked numbers it has already been selected
 
                 if b not in markedNumbers:
-                    if boardIndex[b] == 'x':
+                    if boardindex[b] == 'x':
                         player1selections.append(b)
                         markedNumbers.append(b)
-                    elif boardIndex[b] == '0':
+                    elif boardindex[b] == '0':
                         player2selections.append(b)
                         markedNumbers.append(b)
         break
 
 def check_for_draw():
-    print(counter.c)
     if turnCounter.c > 9:
         print("Game is a draw!")
         exit(0)
 
 def check_winner():
-    for a in winningCombinations:
-            print(a)
+    for combination in winningCombinations:
 
-            if a == player1selections:
+            if combination == player1selections:
                     print('''
                     player 1 wins
                     ''')
                     exit(0)
 
-            elif a == player2selections:
+            elif combination == player2selections:
                     print('''
                     Player 2 wins
                     ''')
@@ -143,10 +141,10 @@ while end != True:
     display_board(board)
 
     # Prompt user for input
-    anInput = get_player_input(markedNumbers)
+    aninput = get_player_input(markedNumbers)
 
     # Add the input to the game board
-    add_input_to_board(anInput, board)
+    add_input_to_board(aninput, board)
 
     # Keep track of the player inputs
     player_count(board, markedNumbers)
